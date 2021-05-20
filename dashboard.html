@@ -1,0 +1,216 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Eurovote Dashboard</title>
+    <!--<style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+			#messages li:nth-child(odd) { background: #eee; }
+    </style>-->
+	<style>
+		html {
+			height: 100vh;
+		}
+		body { font: 14px Open Sans, Segoe UI, Arial;
+			background-color: rgb(7, 20, 52);
+			background-image: url(bg.jpg);
+			background-attachment: fixed;
+			background-position: center center;
+			background-size: cover;
+			color:white;
+			padding:5px 20px;
+		}
+		#msgs, #people { list-style-type: none; margin: 0; padding: 0; }
+		#msgs li { padding: 5px 10px; }
+		#msgs li:nth-child(odd) {  rgba(255,255,255,0.2) }
+		#people {padding: 5px 6px;}
+		#people li {
+			display: inline-block;
+			padding: 0px 10px;
+			border-radius: 5px;
+			box-shadow: 3px 2px 7px 0px rgba(0, 0, 0, 0.6);
+			border: 2px solid #ffffff;
+			color: #ffffff;
+			background: rgba(255, 255, 255, 0.06);
+			font-weight: 500;
+			margin: 0px 10px 2px 0px;
+		}
+		progress {width: 100%;    height: 30px;border-radius: 9px;    position: relative;-webkit-appearance:none}
+
+		progress::-webkit-progress-inner-element {
+			-webkit-appearance: inherit;
+			box-sizing: inherit;
+		}
+	
+		progress::-webkit-progress-bar {
+			background-color: transparent;
+		}
+
+		progress::-webkit-progress-value {
+	    background-image: url(bg.jpg);
+			background-attachment: fixed;
+			background-size: cover;
+			background-position: center center;
+   		height: 100%;
+			box-shadow: inset 0px 0px 8px  rgba(0,0,0,0.5);
+			transition:width 1s ease-in-out;
+			border-radius: 9px;
+		}
+
+		progress::before {
+			content: attr(value);
+			position: absolute;
+			top: 2px;
+			left: 8px;
+			color:white;
+		}
+
+		progress[value="0"]::before,progress[value="1"]::before {
+			color:black;
+		}
+
+		progress[value="1"][max="12"]::before, progress[value="1"][max="24"]::before  {
+			color:white;
+		}
+
+		progress[value="undefined"]::before {
+			color:transparent;
+		}
+
+		.votes td:last-child {width:40%;}
+		.votes td:first-child {background:#DDD;text-align:center}
+
+		.votelist { font-weight: 500;border-spacing:0;border-radius:4px;border:1px solid white; font-size:20px;	box-shadow: 0px 0px 8px  rgba(0,0,0,0.5);width:100%}
+		.votelist thead tr {background-color:rgba(255,255,255,0.9); color:black;text-align:left;}
+		.votelist thead a {color:black;}
+		.votelist tr, #vote tr::before {background: rgba(236, 236, 236,0.8); color: black;}
+		.votelist td, .votelist th {vertical-align: middle; border-bottom: 1px solid #fff;
+			padding: 2px 4px;
+			width: inherit; word-break:keep-all;
+		}
+	</style>
+  </head>
+  <body>
+  <div class="row">
+	  <div class="span2">
+		<ul id="people" class="unstyled"></ul>
+	  </div>
+	  <table class="votes votelist">
+		</table>
+	</div>
+
+    <!-- <ul id="messages"></ul>
+    <form action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>-->
+	<script src="/socket.io/socket.io.js"></script>
+	<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+	<script>
+	  /*$(function () {
+		var socket = io();
+		$('form').submit(function(e){
+		  e.preventDefault(); // prevents page reloading
+		  socket.emit('chat message', $('#m').val());
+		  $('#m').val('');
+		  return false;
+		});
+		socket.on('chat message', function(msg){
+		  $('#messages').append($('<li>').text(msg));
+		});
+	  });*/
+	  
+	  $(function () {
+		var userlist = {};
+		var socket = io();
+		var sessionid = false;
+		$("form").submit(function(event){
+    		event.preventDefault();
+		});
+
+		socket.on("connect", function() {
+			
+		});
+
+		socket.on("update-people", function(people){
+				$("#people").empty();
+				$.each(people, function(i, name) {
+					$('#people').append("<li>" + name + "</li>");
+				});
+				userlist = people;
+		});
+		
+		socket.on("update-votes", function(msg){
+			console.log(msg);
+			highestScore=0;
+			for(act in msg) {
+				$(".votes progress[data-act='"+act+"']").val(msg[act]["score"]);
+				if(msg[act]["score"]>highestScore)
+					highestScore=msg[act]["score"];
+			}
+			$(".votes progress").attr("max",highestScore);
+		});
+
+		socket.on("init-votes", function(msg){
+			if(sessionid == false) {
+				sessionid = socket.id;
+				console.log(msg);
+				highestScore=0;
+				for(act in msg) {
+					$(".votes").append("<tr class=\"bouger\">\
+						<td>"+act+"</td>\
+						<td>"+msg[act]["country"]+"</td>\
+						<td>"+msg[act]["contestant"]+"</td>\
+						<td>"+msg[act]["song"]+"</td>\
+						<td><progress max='100' value='"+msg[act]["score"]+"' data-act='"+act+"'></progress></td></tr>");
+						//<td>"+msg[act]["points"]+"</td>\
+						//<td>"+msg[act]["place"]+"</td>\
+					if(msg[act]["score"]>highestScore)
+						highestScore=msg[act]["score"];
+				}
+				$(".votes progress").attr("max",highestScore);
+				
+				/*window.setTimeout(function() {
+					var from = 5;
+					var to = 2;
+					offset = $(".votes tr.bouger:nth-child("+to+")").offset();
+					var $from = $(".votes tr.bouger:nth-child("+from+")").clone().insertAfter($(".votes tr.bouger:nth-child("+from+")"));
+					var $overlay = $(".votes tr.bouger:nth-child("+(from)+")");
+					$(".votes tr.bouger:nth-child("+to+")").before("<tr class=\"newspacer\" style='height:0px'></tr>");
+					$(".votes tr.newspacer").animate({
+						height: $(".votes tr.bouger:nth-child("+from+")").height()
+					}, 1000);
+					$from.css({opacity:"0"}).addClass("original");
+					$overlay.find("td").each( function() {
+						width = $(this).width();
+						$(this).css({width:width});
+					});
+					$overlay.addClass("overlay").css({position:"absolute",top:$(this).top,left:$(this).left}).animate({
+						top:offset.top,
+						left:offset.left
+					}, 1000, function() {
+						
+						$(".votes tr.bouger.original").before("<tr class=\"oldspacer\" style='height:"+$(this).height()+"px'></tr>").css({opacity:1}).insertAfter(	$(".votes tr.newspacer")).removeClass("original");
+						$(".votes tr.newspacer").remove();
+						$(".votes tr.overlay").remove();
+						$(".votes tr.oldspacer").animate({
+							height: 0
+						}, 400, function() {$(this).remove()});
+					});
+				},1000);*/
+			}
+		});
+
+		socket.on("disconnect", function(){
+			$("#msg").attr("disabled", "disabled");
+			$("#send").attr("disabled", "disabled");
+		});
+
+	});
+	</script>
+  </body>
+</html>
