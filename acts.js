@@ -1,87 +1,127 @@
 module.exports = {
   1: {
-    country: "San Marino",
-    contestant: "Senhit",
-    song: "Ardenalina"
+    country: "Czech Republic",
+    contestant: "We Are Domi",
+    song: "Lights Off"
   },
   2: {
-    country: "Estonia",
-    contestant: "Uku Suviste",
-    song: "The Lucky One"
+    country: "Romania",
+    contestant: "WRS",
+    song: "Llámame"
   },
   3: {
-    country: "Czech Republic",
-    contestant: "Benny Cristo",
-    song: "omaga"
+    country: "Portugal",
+    contestant: "Maro",
+    song: "Saudade, saudade"
   },
   4: {
-    country: "Greece",
-    contestant: "Stefania",
-    song: "Last Dance"
+    country: "Finland",
+    contestant: "The Rasmus",
+    song: "Jezebel"
   },
   5: {
-    country: "Austria",
-    contestant: "Vincent Bueno",
-    song: "Amen"
+    country: "Switzerland",
+    contestant: "Marius Bear",
+    song: "Boys Do Cry"
   },
   6: {
-    country: "Poland",
-    contestant: "RAFAŁ",
-    song: "The Ride"
+    country: "France",
+    contestant: "Alvan & Ahez",
+    song: "Fulenn"
   },
   7: {
-    country: "Moldava",
-    contestant: "Natalia Gordienko",
-    song: "SUGAR"
+    country: "Norway",
+    contestant: "Subwoolfer",
+    song: "Give That Wolf A Banana"
   },
   8: {
-    country: "Iceland",
-    contestant: "Daði og Gagnamagnið",
-    song: "10 Years"
+    country: "Armenia",
+    contestant: "Rosa Linn",
+    song: "Snap"
   },
   9: {
-    country: "Norway",
-    contestant: "Serbia",
-    song: "Loco Loco"
+    country: "Italy",
+    contestant: "Mahmood & Blanco",
+    song: "Snap"
   },
   10: {
-    country: "Georgia",
-    contestant: "Tornike Kipiani",
-    song: "You"
+    country: "Spain",
+    contestant: "Chanel",
+    song: "SloMo"
   },
   11: {
-    country: "Albania",
-    contestant: "Anxhela Peristeri",
-    song: "Karma"
+    country: "Netherlands",
+    contestant: "S10",
+    song: "De Diepte"
   },
   12: {
-    country: "Portugal",
-    contestant: "The Black Mamba",
-    song: "Love Is On My Side"
+    country: "Ukraine",
+    contestant: "Kalush Orchestra",
+    song: "Stefania"
   },
   13: {
-    country: "Bulgaria",
-    contestant: "VICTORIA",
-    song: "Growing Up Is Getting Old"
+    country: "Germany",
+    contestant: "Malik Harris",
+    song: "Rockstars"
   },
   14: {
-    country: "Finland",
-    contestant: "Blind Channel",
-    song: "Dark Side"
+    country: "Lithuania",
+    contestant: "Monika Liu",
+    song: "Sentimental"
   },
   15: {
-    country: "Latvia",
-    contestant: "Samanta Tina",
-    song: "The Moon Is Rising"
+    country: "Azerbaijan",
+    contestant: "Nadir Rustamli",
+    song: "Fade to Black"
   },
   16: {
-    country: "Switzerland",
-    contestant: "Gjon's Tears",
-    song: "Tout l'Univers"
+    country: "Belgium",
+    contestant: "Jérémie Makiese",
+    song: "Miss You"
   },
   17: {
-    country: "Denmark",
-    contestant: "Fyr Og Flamme",
-    song: "Øve Os På Hinanden"
+    country: "Greece",
+    contestant: "Amanda Georgiadi Tenfjord",
+    song: "Die Together"
   },
+  18: {
+    country: "Iceland",
+    contestant: "Systur",
+    song: "Með Hækkandi Sól"
+  },
+  19: {
+    country: "Moldava",
+    contestant: "Zdob şi Zdub & Advahov Brothers",
+    song: "Trenulețul"
+  },
+  20: {
+    country: "Sweden",
+    contestant: "Cornelia Jakobs",
+    song: "Hold Me Closer"
+  },
+  21: {
+    country: "Australia",
+    contestant: "Sheldon Riley",
+    song: "Not The Same"
+  },
+  22: {
+    country: "United Kingdom",
+    contestant: "Sam Ryder",
+    song: "SPACE MAN"
+  },
+  23: {
+    country: "Poland",
+    contestant: "Ochman",
+    song: "River"
+  },
+  24: {
+    country: "Serbia",
+    contestant: "Konstrakta",
+    song: "In Corpore Sano"
+  },
+  25: {
+    country: "Estonia",
+    contestant: "Stefan",
+    song: "Hope"
+  }
 }

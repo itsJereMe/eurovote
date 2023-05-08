@@ -2,6 +2,7 @@
 <html>
   <head>
     <title>Eurovote Dashboard</title>
+	<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <!--<style>
       * { margin: 0; padding: 0; box-sizing: border-box; }
       body { font: 13px Helvetica, Arial; }
@@ -46,7 +47,7 @@
 			-webkit-appearance: inherit;
 			box-sizing: inherit;
 		}
-	
+
 		progress::-webkit-progress-bar {
 			background-color: transparent;
 		}
@@ -83,15 +84,18 @@
 		}
 
 		.votes td:last-child {width:40%;}
-		.votes td:first-child {background:#DDD;text-align:center}
+		.votes td:first-child {background:#b1b4b963;text-align:center}
 
-		.votelist { font-weight: 500;border-spacing:0;border-radius:4px;border:1px solid white; font-size:20px;	box-shadow: 0px 0px 8px  rgba(0,0,0,0.5);width:100%}
+		.votelist { font-weight: 500;border-spacing:0;border-radius:8px;overflow:hidden; font-size:20px;	box-shadow: 0px 0px 8px  rgba(0,0,0,0.5);width:100%; backdrop-filter: blur(4px)}
 		.votelist thead tr {background-color:rgba(255,255,255,0.9); color:black;text-align:left;}
 		.votelist thead a {color:black;}
-		.votelist tr, #vote tr::before {background: rgba(236, 236, 236,0.8); color: black;}
-		.votelist td, .votelist th {vertical-align: middle; border-bottom: 1px solid #fff;
+		.votelist tr, #vote tr::before {background: rgba(255, 255, 255,0.9); color: black; line-height: 1.1}
+		.votelist td, .votelist th {vertical-align: middle; border-bottom: 1px solid #ffffff59;
 			padding: 2px 4px;
 			width: inherit; word-break:keep-all;
+		}
+		.votelist td:nth-child(3), .votelist td:nth-child(4) {
+			font-weight: 400;
 		}
 	</style>
   </head>
@@ -123,7 +127,7 @@
 		  $('#messages').append($('<li>').text(msg));
 		});
 	  });*/
-	  
+
 	  $(function () {
 		var userlist = {};
 		var socket = io();
@@ -133,7 +137,7 @@
 		});
 
 		socket.on("connect", function() {
-			
+
 		});
 
 		socket.on("update-people", function(people){
@@ -143,7 +147,7 @@
 				});
 				userlist = people;
 		});
-		
+
 		socket.on("update-votes", function(msg){
 			console.log(msg);
 			highestScore=0;
@@ -173,7 +177,7 @@
 						highestScore=msg[act]["score"];
 				}
 				$(".votes progress").attr("max",highestScore);
-				
+
 				/*window.setTimeout(function() {
 					var from = 5;
 					var to = 2;
@@ -193,7 +197,7 @@
 						top:offset.top,
 						left:offset.left
 					}, 1000, function() {
-						
+
 						$(".votes tr.bouger.original").before("<tr class=\"oldspacer\" style='height:"+$(this).height()+"px'></tr>").css({opacity:1}).insertAfter(	$(".votes tr.newspacer")).removeClass("original");
 						$(".votes tr.newspacer").remove();
 						$(".votes tr.overlay").remove();
