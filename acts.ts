@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   1: {
     country: "Czech Republic",
     contestant: "We Are Domi",
