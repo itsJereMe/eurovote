@@ -1,5 +1,5 @@
 import express, {Express} from 'express';
-import actlist from './acts';
+import acts from './acts';
 import socketIo from 'socket.io';
 import {User} from './types/User';
 
@@ -21,53 +21,43 @@ app.get('/dashboard', function (req, res) {
 app.use('/assets', express.static(__dirname + '/assets'))
 
 io.on('connection', function (socket) {
-    socket.emit("init-votes", actlist);
+    socket.emit("init-votes", acts);
     io.sockets.emit("update-people", getPeople());
     console.log(getPeople());
     connections++;
     console.log("Connections: " + connections + " (+" + socket.id + ")");
 
-    socket.on("join", (UserId, username) => {
-        console.log(username + " joined");
+    const joinUser = (userId, username) => {
+        console.log(username + " joined (" + ((userId in users) ? 'familiar' : 'not familiar yet') + ")");
 
-        if (UserId in users) {
-            console.log("we know you");
-            users[UserId].socketId = socket.id;
-            users[UserId].active = true;
-            io.sockets.emit("init-scores", users[UserId]["votes"]);
+        if (userId in users) {
+            users[userId].socketId = socket.id;
+            users[userId].active = true;
+            io.sockets.emit("init-scores", users[userId]["votes"]);
         } else {
-            users[UserId] = {socketId: socket.id, username: username, active: true, votes: {}};
+            users[userId] = {socketId: socket.id, username: username, active: true, votes: {}};
         }
 
         io.sockets.emit("update-people", getPeople());
-    });
+    }
 
-    socket.on("rejoin", (UserId, username, _) => {
-        console.log(username + " joined again");
-        if (UserId in users) {
-            users[UserId].socketId = socket.id;
-            users[UserId].active = true;
-        } else {
-            console.log("could not find old session id in array");
-            users[UserId] = {socketId: socket.id, username: username, active: true, votes: {}};
-        }
-        io.sockets.emit("update-people", getPeople());
-    });
+    socket.on("join", joinUser);
+    socket.on("rejoin", joinUser);
 
     socket.on("vote", (UserId, msg) => {
         users[UserId]["votes"] = msg;
         calculateVotes();
-        io.emit("update-votes", actlist);
+        io.emit("update-votes", acts);
     });
 
     socket.on("disconnect", (reason) => {
         console.log("a user disconnected: " + reason + " (" + socket.id + ")");
         if (reason != "ping timeout") {
             const userId = socketIdToUserId(socket.id);
-            if (userId != false) {
+            if (userId) {
                 users[userId].active = false;
                 calculateVotes();
-                io.sockets.emit("update-votes", actlist);
+                io.sockets.emit("update-votes", acts);
                 io.sockets.emit("update-people", getPeople());
             }
         }
@@ -96,17 +86,17 @@ const getPeople = () => {
 }
 
 const calculateVotes = () => {
-    for (const act in actlist) {
-        actlist[act]["score"] = 0;
+    for (const act in acts) {
+        acts[act]["score"] = 0;
     }
     for (const voter in users) {
         if (users[voter].active) {
             for (const act in users[voter]["votes"]) {
-                if (act in actlist) {
-                    if ("score" in actlist[act]) {
-                        actlist[act]["score"] += users[voter]["votes"][act];
+                if (act in acts) {
+                    if ("score" in acts[act]) {
+                        acts[act]["score"] += users[voter]["votes"][act];
                     } else {
-                        actlist[act]["score"] = users[voter]["votes"][act];
+                        acts[act]["score"] = users[voter]["votes"][act];
                     }
                 }
             }
