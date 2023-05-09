@@ -21,6 +21,10 @@ app.get('/bg.jpg', function (req, res) {
     res.sendFile(__dirname + '/bg.jpg');
 });
 
+app.get('/logo.svg', function (req, res) {
+    res.sendFile(__dirname + '/logo.svg');
+});
+
 io.on('connection', function (socket) {
     socket.emit("init-votes", actlist);
     io.sockets.emit("update-people", getPeople());

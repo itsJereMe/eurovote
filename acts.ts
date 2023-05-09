@@ -1,127 +1,77 @@
 export default {
   1: {
-    country: "Czech Republic",
-    contestant: "We Are Domi",
-    song: "Lights Off"
+    country: "Norway",
+    contestant: "Alessandra",
+    song: "Queen of Kings"
   },
   2: {
-    country: "Romania",
-    contestant: "WRS",
-    song: "Llámame"
+    country: "Malta",
+    contestant: "The Busker",
+    song: "Dance"
   },
   3: {
-    country: "Portugal",
-    contestant: "Maro",
-    song: "Saudade, saudade"
+    country: "Serbia",
+    contestant: "Luke Black",
+    song: "Samo Mi Se Spava"
   },
   4: {
-    country: "Finland",
-    contestant: "The Rasmus",
-    song: "Jezebel"
+    country: "Latvia",
+    contestant: "Sudden Lights",
+    song: "Aijā"
   },
   5: {
-    country: "Switzerland",
-    contestant: "Marius Bear",
-    song: "Boys Do Cry"
+    country: "Portugal",
+    contestant: "Mimicat",
+    song: "Ai Coração"
   },
   6: {
-    country: "France",
-    contestant: "Alvan & Ahez",
-    song: "Fulenn"
+    country: "Ireland",
+    contestant: "Wild Youth",
+    song: "We Are One"
   },
   7: {
-    country: "Norway",
-    contestant: "Subwoolfer",
-    song: "Give That Wolf A Banana"
+    country: "Croatia",
+    contestant: "Let 3",
+    song: "Mama ŠČ!"
   },
   8: {
-    country: "Armenia",
-    contestant: "Rosa Linn",
-    song: "Snap"
+    country: "Switzerland",
+    contestant: "Remo Forrer",
+    song: "Watergun"
   },
   9: {
-    country: "Italy",
-    contestant: "Mahmood & Blanco",
-    song: "Snap"
+    country: "Israel",
+    contestant: "Noa Kirel",
+    song: "Unicorn"
   },
   10: {
-    country: "Spain",
-    contestant: "Chanel",
-    song: "SloMo"
+    country: "Moldava",
+    contestant: "Pasha Parfeni",
+    song: "Soarele şi Luna"
   },
   11: {
-    country: "Netherlands",
-    contestant: "S10",
-    song: "De Diepte"
+    country: "Sweden",
+    contestant: "Loreen",
+    song: "Tattoo"
   },
   12: {
-    country: "Ukraine",
-    contestant: "Kalush Orchestra",
-    song: "Stefania"
+    country: "Azerbaijan",
+    contestant: "TuralTuranX",
+    song: "Tell Me More"
   },
   13: {
-    country: "Germany",
-    contestant: "Malik Harris",
-    song: "Rockstars"
+    country: "Czechia",
+    contestant: "Vesna",
+    song: "My Sister's Crown"
   },
   14: {
-    country: "Lithuania",
-    contestant: "Monika Liu",
-    song: "Sentimental"
+    country: "Netherlands",
+    contestant: "Mia Nicolai & Dion Cooper",
+    song: "Burning Daylight"
   },
   15: {
-    country: "Azerbaijan",
-    contestant: "Nadir Rustamli",
-    song: "Fade to Black"
-  },
-  16: {
-    country: "Belgium",
-    contestant: "Jérémie Makiese",
-    song: "Miss You"
-  },
-  17: {
-    country: "Greece",
-    contestant: "Amanda Georgiadi Tenfjord",
-    song: "Die Together"
-  },
-  18: {
-    country: "Iceland",
-    contestant: "Systur",
-    song: "Með Hækkandi Sól"
-  },
-  19: {
-    country: "Moldava",
-    contestant: "Zdob şi Zdub & Advahov Brothers",
-    song: "Trenulețul"
-  },
-  20: {
-    country: "Sweden",
-    contestant: "Cornelia Jakobs",
-    song: "Hold Me Closer"
-  },
-  21: {
-    country: "Australia",
-    contestant: "Sheldon Riley",
-    song: "Not The Same"
-  },
-  22: {
-    country: "United Kingdom",
-    contestant: "Sam Ryder",
-    song: "SPACE MAN"
-  },
-  23: {
-    country: "Poland",
-    contestant: "Ochman",
-    song: "River"
-  },
-  24: {
-    country: "Serbia",
-    contestant: "Konstrakta",
-    song: "In Corpore Sano"
-  },
-  25: {
-    country: "Estonia",
-    contestant: "Stefan",
-    song: "Hope"
+    country: "Finland",
+    contestant: "Käärijä",
+    song: "Cha Cha Cha"
   }
 }
