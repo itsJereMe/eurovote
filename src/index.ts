@@ -1,7 +1,7 @@
 import express, {Express} from 'express';
 import actlist from './acts';
 import socketIo from 'socket.io';
-import {User} from './User';
+import {User} from './types/User';
 
 const app: Express = express();
 const http = require('http').Server(app);
@@ -11,19 +11,14 @@ let connections = 0;
 const users: {[id: string]: User} = {};
 
 app.get('/', function (req, res) {
-    res.sendFile(__dirname + '/index.html');
+    res.sendFile(__dirname + '/templates/index.html');
 });
 
 app.get('/dashboard', function (req, res) {
-    res.sendFile(__dirname + '/dashboard.html');
-});
-app.get('/bg.jpg', function (req, res) {
-    res.sendFile(__dirname + '/bg.jpg');
+    res.sendFile(__dirname + '/templates/dashboard.html');
 });
 
-app.get('/logo.svg', function (req, res) {
-    res.sendFile(__dirname + '/logo.svg');
-});
+app.use('/assets', express.static(__dirname + '/assets'))
 
 io.on('connection', function (socket) {
     socket.emit("init-votes", actlist);
