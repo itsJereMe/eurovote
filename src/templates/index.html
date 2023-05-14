@@ -416,6 +416,10 @@
         console.log("established connection");
     });
 
+    socket.on("error", (msg) => {
+        messages.innerHTML = "Encountered an error: " + msg;
+    });
+
     function setCookie(cname, cvalue, exdays) {
         const d = new Date();
         d.setTime(d.getTime() + (exdays * 24 * 60 * 60 * 1000));

@@ -33,7 +33,7 @@ io.on('connection', function (socket) {
         if (userId in users) {
             users[userId].socketId = socket.id;
             users[userId].active = true;
-            io.sockets.emit("init-scores", users[userId]["votes"]);
+            socket.emit("init-scores", users[userId].votes);
         } else {
             users[userId] = {socketId: socket.id, username: username, active: true, votes: {}};
         }
@@ -45,7 +45,9 @@ io.on('connection', function (socket) {
     socket.on("rejoin", joinUser);
 
     socket.on("vote", (UserId, msg) => {
-        users[UserId]["votes"] = msg;
+        console.log("vote", UserId, msg);
+
+        getUser(UserId).votes = msg;
         calculateVotes();
         io.emit("update-votes", acts);
     });
@@ -53,9 +55,9 @@ io.on('connection', function (socket) {
     socket.on("disconnect", (reason) => {
         console.log("a user disconnected: " + reason + " (" + socket.id + ")");
         if (reason != "ping timeout") {
-            const userId = socketIdToUserId(socket.id);
-            if (userId) {
-                users[userId].active = false;
+            const user = socketIdToUser(socket.id);
+            if (user) {
+                user.active = false;
                 calculateVotes();
                 io.sockets.emit("update-votes", acts);
                 io.sockets.emit("update-people", getPeople());
@@ -64,39 +66,33 @@ io.on('connection', function (socket) {
         connections--;
         console.log("Connections: " + connections);
     });
+
+    const getUser = (userId: string): User => {
+        if (!(userId in users)) {
+            socket.emit("error", "User unknown, please push the button clear username and votes");
+            return {active: false, socketId: '?', username: '?', votes: undefined};
+        }
+
+        return users[userId];
+    }
 });
 
-const socketIdToUserId = (currentSocketId: string) => {
-    for (const voter in users) {
-        if (users[voter].socketId == currentSocketId) {
-            return voter;
-        }
-    }
-    return false;
-}
+const socketIdToUser = (currentSocketId: string) => Object.values(users).find((user) => user.socketId == currentSocketId);
 
-const getPeople = () => {
-    const result = [];
-    console.log(users);
-    for (const voter in users) {
-        if (users[voter].active)
-            result.push(users[voter].username);
-    }
-    return result;
-}
+const getPeople = (): string[] => Object.values(users).filter(user => user.active).map(user => user.username);
 
 const calculateVotes = () => {
     for (const act in acts) {
-        acts[act]["score"] = 0;
+        acts[act].score = 0;
     }
     for (const voter in users) {
         if (users[voter].active) {
-            for (const act in users[voter]["votes"]) {
+            for (const act in users[voter].votes) {
                 if (act in acts) {
                     if ("score" in acts[act]) {
-                        acts[act]["score"] += users[voter]["votes"][act];
+                        acts[act].score += users[voter].votes[act];
                     } else {
-                        acts[act]["score"] = users[voter]["votes"][act];
+                        acts[act].score = users[voter].votes[act];
                     }
                 }
             }
