@@ -82,17 +82,17 @@ const socketIdToUser = (currentSocketId: string) => Object.values(users).find((u
 const getPeople = (): string[] => Object.values(users).filter(user => user.active).map(user => user.username);
 
 const calculateVotes = () => {
-    for (const act in acts) {
-        acts[act].score = 0;
+    for (const actNumber in acts) {
+        acts[actNumber].score = 0;
     }
-    for (const voter in users) {
-        if (users[voter].active) {
-            for (const act in users[voter].votes) {
+    for (const user of Object.values(users)) {
+        if (user.active) {
+            for (const act in user.votes) {
                 if (act in acts) {
                     if ("score" in acts[act]) {
-                        acts[act].score += users[voter].votes[act];
+                        acts[act].score += user.votes[act];
                     } else {
-                        acts[act].score = users[voter].votes[act];
+                        acts[act].score = user.votes[act];
                     }
                 }
             }
