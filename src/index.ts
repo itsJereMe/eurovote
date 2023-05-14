@@ -1,11 +1,27 @@
 import express, {Express} from 'express';
 import acts from './acts';
-import socketIo from 'socket.io';
-import {User} from './types/User';
+import {Server} from 'socket.io';
+import {User, Votes} from './types/User';
+import http from 'http';
+import Act from './types/Act';
 
 const app: Express = express();
-const http = require('http').Server(app);
-const io = socketIo(http);
+const server = http.createServer(app);
+const io = new Server(server);
+
+interface ClientToServerMessages {
+    join: ( userId: string, username: string ) => void;
+    rejoin: ( userId: string, username: string ) => void;
+    vote: ( userId: string, msg: Votes ) => void;
+}
+
+interface ServerToClientMessages {
+    "init-votes": (acts: {[p: number]: Act}) => void;
+    "update-votes": (acts: {[p: number]: Act}) => void;
+    "update-people": (people: string[]) => void;
+    "init-scores": (votes: Votes) => void;
+    "error": (msg: string) => void;
+}
 
 let connections = 0;
 const users: {[id: string]: User} = {};
@@ -27,7 +43,7 @@ io.on('connection', function (socket) {
     connections++;
     console.log("Connections: " + connections + " (+" + socket.id + ")");
 
-    const joinUser = (userId, username) => {
+    const joinUser = (userId: string, username: string): void => {
         console.log(username + " joined (" + ((userId in users) ? 'familiar' : 'not familiar yet') + ")");
 
         if (userId in users) {
@@ -100,7 +116,7 @@ const calculateVotes = () => {
     }
 }
 
-http.listen(8000, function () {
+server.listen(8000, function () {
     console.log('listening on *:8000');
 });
 

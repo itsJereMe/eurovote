@@ -5,4 +5,4 @@ export interface User {
     votes: Votes;
 }
 
-type Votes = {[id: string]: number}
+export type Votes = {[id: string]: number}
