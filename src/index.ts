@@ -1,30 +1,27 @@
 import express, {Express} from 'express';
 import acts from './acts';
 import {Server} from 'socket.io';
-import {User, Votes} from './types/User';
+import {User} from './types/User';
 import http from 'http';
-import Act from './types/Act';
+import webpackDevMiddleware from 'webpack-dev-middleware';
+import { webpack } from 'webpack';
+import {ClientToServerMessages, ServerToClientMessages} from './types/SocketEvents';
+import {ReservedOrUserListener} from 'socket.io/dist/typed-events';
 
 const app: Express = express();
 const server = http.createServer(app);
-const io = new Server(server);
-
-interface ClientToServerMessages {
-    join: ( userId: string, username: string ) => void;
-    rejoin: ( userId: string, username: string ) => void;
-    vote: ( userId: string, msg: Votes ) => void;
-}
-
-interface ServerToClientMessages {
-    "init-votes": (acts: {[p: number]: Act}) => void;
-    "update-votes": (acts: {[p: number]: Act}) => void;
-    "update-people": (people: string[]) => void;
-    "init-scores": (votes: Votes) => void;
-    "error": (msg: string) => void;
-}
+const io = new Server<ClientToServerMessages, ServerToClientMessages>(server);
+const config = require("../webpack.config");
+const compiler = webpack(config);
 
 let connections = 0;
 const users: {[id: string]: User} = {};
+
+app.use(
+    webpackDevMiddleware(compiler, {
+        publicPath: config.output.publicPath,
+    })
+);
 
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/templates/index.html');
@@ -43,7 +40,7 @@ io.on('connection', function (socket) {
     connections++;
     console.log("Connections: " + connections + " (+" + socket.id + ")");
 
-    const joinUser = (userId: string, username: string): void => {
+    const joinUser: ReservedOrUserListener<ClientToServerMessages, ServerToClientMessages, "join"|"rejoin"> = (userId: string, username: string) => {
         console.log(username + " joined (" + ((userId in users) ? 'familiar' : 'not familiar yet') + ")");
 
         if (userId in users) {
