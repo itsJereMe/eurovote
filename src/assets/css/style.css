@@ -1,9 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,300..800&display=swap');
+
 html {
     height: 100vh;
 }
 
 body {
-    font: 14px Open Sans, Segoe UI, Arial;
+    font: 14px Montserrat, Segoe UI, Arial;
     background-color: rgb(7, 20, 52);
     background-image: url('/assets/bg.jpg');
     background-attachment: fixed;
