@@ -28,7 +28,7 @@ socket.on("update-votes", (acts) => {
         const rowElement: HTMLProgressElement = document.querySelector(".votes tr[data-act='" + key + "']");
         rowElement.dataset.ranking = index.toString();
         rowElement.dataset.score = value.score.toString();
-        (rowElement.querySelector(':last-child') as HTMLElement).innerText = value.score.toString();
+        (rowElement.querySelector('td:last-child') as HTMLElement).innerText = value.score.toString();
         (rowElement.querySelector('progress') as HTMLProgressElement).value = value.score;
     });
 
