@@ -26,15 +26,15 @@ interface ServerToClientMessages {
 let connections = 0;
 const users: {[id: string]: User} = {};
 
-app.get('/', function (req, res) {
+app.get('/', (req, res) => {
     res.sendFile(__dirname + '/templates/index.html');
 });
 
-app.get('/dashboard', function (req, res) {
+app.get('/dashboard', (_req, res) =>  {
     res.sendFile(__dirname + '/templates/dashboard.html');
 });
 
-app.use('/assets', express.static(__dirname + '/assets'))
+app.use('/assets', express.static(__dirname + '/assets', {maxAge: 60 * 60 * 24}))
 
 io.on('connection', function (socket) {
     socket.emit("init-votes", acts);
