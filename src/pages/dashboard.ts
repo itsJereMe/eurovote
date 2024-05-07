@@ -13,7 +13,7 @@ socket.on("init-votes", (acts) => {
         rankedActs()
             .map(([key, act], index) => "<tr data-act='" + key + "' data-score='" + act.score + "' data-ranking='" + index + "'>\
                     <td>" + key + "</td>\
-                    <td><progress value='" + act.score + "'></progress>" + act.country + "</td>\
+                    <td><progress value='" + act.score + "'></progress><span>" + act.country + "</span></td>\
                     <td>" + act.score + "</td>\
                 </tr>").join('');
 
@@ -40,7 +40,7 @@ const positionRows = () => {
     document.querySelectorAll(".votes tr").forEach((element: HTMLElement) => {
         const ranking = Number.parseInt(element.dataset.ranking);
         const leftRowSize = Math.floor(Object.keys(actList).length / 2);
-        const rowHeight = 64;
+        const rowHeight = 68;
         let top = ranking * rowHeight;
         let left = 0;
 
