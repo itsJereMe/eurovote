@@ -34,31 +34,26 @@ a {
     width: 100%;
 }
 
-#people {
-    padding: 5px 6px;
-}
-
 #people li {
     display: inline-block;
-    padding: 0 10px;
+    padding: 4px 10px;
     border-radius: 5px;
-    box-shadow: 3px 2px 7px 0 rgba(0, 0, 0, 0.6);
-    border: 2px solid #ffffff;
+    box-shadow: 2px 1px 7px 0 rgba(0, 0, 0, 0.4);
     color: #ffffff;
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(255, 255, 255, 0.2);
     font-weight: 500;
     margin: 0 10px 2px 0;
 }
 
 input, button, a.button {
     border-radius: 30px;
-    box-shadow: 3px 2px 7px 0 rgba(0, 0, 0, 0.6);
-    border: 2px solid #ffffff;
+    box-shadow: 2px 1px 7px 0 rgba(0, 0, 0, 0.4);
+    border: 1px solid #ffffff;
     color: #ffffff;
     background: rgba(255, 255, 255, 0.06);
     font: 14px Open Sans, Segoe UI, Arial;
     font-weight: 500;
-    padding: 2px 10px;
+    padding: 3px 10px;
     text-decoration: none;
     outline: none;
 }
@@ -69,8 +64,8 @@ button:hover, a.button:hover, input[type="submit"]:hover {
 }
 
 input::placeholder {
-    font: 14px Open Sans, Segoe UI, Arial;
-    font-weight: 500;
+    font: 14px Montserrat, Segoe UI, Arial;
+    font-weight: 400;
     color: white;
 }
 
@@ -109,16 +104,22 @@ input::placeholder {
     box-shadow: 0 0 10px 0 rgba(0,0,0, .3);
 }
 
-.votelist tr, #vote tr::before {
+.votelist tr {
     height: 45px;
     margin: 3px;
     background: rgba(244, 248, 255, 0.95);
     color: black;
+    border-radius: 6px;
+    transition: 1s background;
+    transition-delay: .5s;
+}
+
+.votelist tr:nth-child(even) {
+    background: rgba(255, 255, 255, 0.98);
 }
 
 .votelist td, .votelist th {
     vertical-align: middle;
-    border-bottom: 1px solid #fff;
     padding: 2px 6px;
     width: inherit;
     word-break: break-word;
@@ -127,10 +128,11 @@ input::placeholder {
 .votelist td.dragger {
     text-align: right;
     background: #ffffffc9;
-    color: #071434;
     font-size: 22px;
-    width: auto;
+    width: 24px;
     cursor: n-resize;
+    background: url(https://static-00.iconduck.com/assets.00/chevron-up-down-icon-282x512-xvdjygib.png) 50% 50% no-repeat;
+    background-size: 12px;
 }
 
 .votelist td:first-child {
@@ -155,13 +157,17 @@ input::placeholder {
 #vote tbody tr::before {
     content: " ";
     display: table-cell;
-    border-bottom: 1px solid #f2f2f2;
     vertical-align: middle;
     padding: 2px 6px;
-    background: #00000008;
+    background: #2e61328a;
     text-align: center;
     font-weight: bold;
     word-break: keep-all;
+    box-shadow: inset -5px 0 15px -10px #0000004f;
+}
+
+#vote tr:nth-child(1)::before {
+    content: inherit;
 }
 
 #vote tr:nth-child(2)::before {
@@ -202,6 +208,18 @@ input::placeholder {
 
 #vote tr:nth-child(11)::before {
     content: "1"
+}
+
+.ui-sortable-helper {
+    display: table;
+}
+
+.ui-sortable-helper td:first-child {
+    width: 15px;
+}
+
+.ui-sortable-helper td:nth-child(2) {
+    width: 110px;
 }
 
 .center {

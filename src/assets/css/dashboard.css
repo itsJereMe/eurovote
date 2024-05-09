@@ -91,7 +91,7 @@ progress[value="undefined"]::before {
     font-size: 28px;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
     width: 100%;
-    backdrop-filter: blur(4px);
+    position: relative;
 }
 
 .votelist tr {

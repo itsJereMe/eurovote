@@ -63,9 +63,8 @@ socket.on("init-votes", (acts) => {
         Object.entries(acts).map(([key, act]) => "<tr class=\"bouger\" data-act=\"" + key + "\">\
                     <td>" + key + "</td>\
                     <td>" + act.country + "</td>\
-                    <td>" + act.contestant + "</td>\
-                    <td>" + act.song + "</td>\
-                    <td class=\"dragger\">&#8597;</td>\
+                    <td>" + act.contestant + " - " + act.song + "</td>\
+                    <td class=\"dragger\"></td>\
                 </tr>").join('');
 
     $("#votable tbody").sortable({
