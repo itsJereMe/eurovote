@@ -39,18 +39,19 @@ socket.on("update-votes", (acts) => {
 const positionRows = () => {
     document.querySelectorAll(".votes tr").forEach((element: HTMLElement) => {
         const ranking = Number.parseInt(element.dataset.ranking);
-        const leftRowSize = Math.floor(Object.keys(actList).length / 2);
+        const leftRowSize = Math.ceil(Object.keys(actList).length / 2);
         const rowHeight = 68;
         let top = ranking * rowHeight;
         let left = 0;
 
-        if (ranking > leftRowSize) {
-            top = (ranking - leftRowSize - 1) * rowHeight
+        if (ranking >= leftRowSize) {
+            top = (ranking - leftRowSize) * rowHeight
             left = 50.5;
         }
 
         element.style.top = top + 'px';
         element.style.left = left + '%';
+        console.log(ranking, leftRowSize);
     })
 }
 
