@@ -1,7 +1,8 @@
 import path from "path";
-import HtmlWebpackPlugin from "html-webpack-plugin";
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import {Configuration} from 'webpack';
 
-module.exports = {
+const config: Configuration = {
     mode: "development",
     entry: {
         index: "./src/pages/index.ts",
@@ -31,3 +32,5 @@ module.exports = {
         })
     ]
 };
+
+export default config;
