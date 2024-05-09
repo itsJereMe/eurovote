@@ -4,7 +4,8 @@ import Act from './Act';
 export interface ClientToServerMessages {
     join: ( userId: string, username: string ) => void;
     rejoin: ( userId: string, username: string ) => void;
-    vote: ( userId: string, msg: Votes ) => void;
+    vote: ( userId: string, userVotes: Votes ) => void;
+    logout: ( userId: string) => void;
 }
 
 export interface ServerToClientMessages {

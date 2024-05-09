@@ -26,7 +26,9 @@ function join(name: string) {
     }
 }
 
-document.querySelector("#clearAll").addEventListener("click", () => {
+document.querySelector("#logout").addEventListener("click", () => {
+    socket.emit("logout", UserId);
+
     deleteAllCookies();
     location.reload();
 });

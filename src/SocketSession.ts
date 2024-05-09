@@ -7,23 +7,17 @@ import {EventNames, EventParams} from 'socket.io/dist/typed-events';
 
 export default class SocketSession {
 
-    users: {[id: string]: User} = {};
+    users: {[userId: string]: User} = {};
 
     io: Server<ClientToServerMessages, ServerToClientMessages>;
 
     constructor(io: Server<ClientToServerMessages, ServerToClientMessages>) {
         this.io = io;
-
         this.calculateVotes();
-
-        const socketSession = this;
-        setInterval(function () {
-            socketSession.calculateVotes();
-        }, 60000 * 5);
     }
 
     onConnection = (socket: TypedSocket) => {
-        console.log("a client connected (" + socket.id + ")");
+        console.log("Client connected (" + socket.id + ")");
         socket.emit("init-votes", acts);
         socket.emit("update-people", this.getPeople());
 
@@ -32,26 +26,35 @@ export default class SocketSession {
 
         socket.on("vote", (UserId, userVotes) => {
             const user = this.getUserByUserId(UserId);
-            console.log("vote", user.username, userVotes);
+            console.log("Vote", user.username, userVotes);
 
             if (!user) {
-                return false;
+                return;
             }
 
             user.votes = userVotes;
             this.calculateVotes();
-            this.emitToAll("update-votes", acts);
+        });
+
+        socket.on("logout", (userId) => {
+            console.log('Log out ', userId)
+            if (!(userId in this.users)) {
+                return;
+            }
+
+            delete this.users[userId];
+
+            this.calculateVotes();
+            this.emitToAll("update-people", this.getPeople());
         });
 
         socket.on("disconnect", (reason) => {
-            console.log("a client disconnected: " + reason + " (" + socket.id + ")");
+            console.log("Client disconnected: " + reason + " (" + socket.id + ")");
             if (reason != "ping timeout") {
                 const user = this.socketIdToUser(socket.id);
                 if (user) {
                     user.active = false;
                     this.calculateVotes();
-                    this.emitToAll("update-votes", acts);
-                    this.emitToAll("update-people", this.getPeople());
                 }
             }
         });
@@ -71,10 +74,6 @@ export default class SocketSession {
         this.emitToAll("update-people", this.getPeople())
     }
 
-    emitToAll: <Ev extends EventNames<ServerToClientMessages>>(ev: Ev, ...args: EventParams<ServerToClientMessages, Ev>) => boolean = (ev, ...args) => {
-        return this.io.emit(ev, ...args);
-    }
-
     getUserByUserId: (userId: string) => User|undefined = (userId) => {
         if (!(userId in this.users)) {
             return undefined;
@@ -85,7 +84,7 @@ export default class SocketSession {
 
     socketIdToUser = (currentSocketId: string) => Object.values(this.users).find((user) => user.socketId == currentSocketId);
 
-    getPeople = (): string[] => Object.values(this.users).filter(user => user.active).map(user => user.username);
+    getPeople = (): string[] => Object.values(this.users).map(user => user.username);
 
     calculateVotes = () => {
         for (const actNumber in acts) {
@@ -93,14 +92,18 @@ export default class SocketSession {
         }
 
         for (const user of Object.values(this.users)) {
-            if (user.active) {
-                for (const act in user.votes) {
-                    if (act in acts) {
-                        acts[act].score += user.votes[act];
-                    }
+            for (const act in user.votes) {
+                if (act in acts) {
+                    acts[act].score += user.votes[act];
                 }
             }
         }
+
+        this.emitToAll("update-votes", acts);
+    }
+
+    emitToAll: <Ev extends EventNames<ServerToClientMessages>>(ev: Ev, ...args: EventParams<ServerToClientMessages, Ev>) => boolean = (ev, ...args) => {
+        return this.io.emit(ev, ...args);
     }
 
 }
