@@ -30,7 +30,13 @@ const config: Configuration = {
             template: "src/templates/dashboard.html",
             chunks: ["dashboard"],
         })
-    ]
+    ],
+    resolve: {
+        alias: {
+            "script":  path.resolve(__dirname, "src/assets/script/"),
+        },
+        extensions: [".ts", ".js"]
+    }
 };
 
 export default config;

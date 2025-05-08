@@ -1,6 +1,7 @@
 import {io, Socket} from 'socket.io-client';
 import {ClientToServerMessages, ServerToClientMessages} from '../types/SocketEvents';
 import Act from '../types/Act';
+import countryCodes from '../assets/script/countries';
 
 const socket: Socket<ServerToClientMessages, ClientToServerMessages> = io();
 
@@ -12,7 +13,7 @@ socket.on("init-votes", (acts) => {
     document.querySelector(".votes").innerHTML =
         rankedActs()
             .map(([key, act], index) => "<tr data-act='" + key + "' data-score='" + act.score + "' data-ranking='" + index + "'>\
-                    <td>" + key + "</td>\
+                    <td style='background: url(" + getFlagImage(act.country) + ")'></td>\
                     <td><progress value='" + act.score + "'></progress><span>" + act.country + "</span></td>\
                     <td>" + act.score + "</td>\
                 </tr>").join('');
@@ -20,6 +21,14 @@ socket.on("init-votes", (acts) => {
     updateHighestScore();
     positionRows();
 });
+
+const getFlagImage = (countryName: string) => {
+    if (!countryCodes.hasOwnProperty(countryName)) {
+        return '';
+    }
+
+    return '/assets/img/flags/' + countryCodes[countryName].toLowerCase() + '.svg'
+}
 
 socket.on("update-votes", (acts) => {
     actList = acts;
